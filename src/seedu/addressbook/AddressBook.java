@@ -442,14 +442,31 @@ public class AddressBook {
                 getNameFromPerson(addedPerson), getPhoneFromPerson(addedPerson), getEmailFromPerson(addedPerson));
     }
 
+//    /**
+//     * Finds and lists all persons in address book whose name contains any of the argument keywords.
+//     * Keyword matching is case sensitive.
+//     *
+//     * @param commandArgs full command args string from the user
+//     * @return feedback display message for the operation result
+//     */
+//    private static String executeFindPersons(String commandArgs) {
+//        final Set<String> keywords = extractKeywordsFromFindPersonArgs(commandArgs);
+//        final ArrayList<String[]> personsFound = getPersonsWithNameContainingAnyKeyword(keywords);
+//        showToUser(personsFound);
+//        return getMessageForPersonsDisplayedSummary(personsFound);
+//    }
+
     /**
      * Finds and lists all persons in address book whose name contains any of the argument keywords.
-     * Keyword matching is case sensitive.
+     * Keyword matching is case insensitive.
      *
      * @param commandArgs full command args string from the user
      * @return feedback display message for the operation result
      */
     private static String executeFindPersons(String commandArgs) {
+        // Convert command arguments to upper case for the implementation of keyword
+        // matching to case insensitive in the find command.
+        commandArgs = commandArgs.toUpperCase();
         final Set<String> keywords = extractKeywordsFromFindPersonArgs(commandArgs);
         final ArrayList<String[]> personsFound = getPersonsWithNameContainingAnyKeyword(keywords);
         showToUser(personsFound);
@@ -476,8 +493,26 @@ public class AddressBook {
         return new HashSet<>(splitByWhitespace(findPersonCommandArgs.trim()));
     }
 
+//    /**
+//     * Retrieves all persons in the full model whose names contain some of the specified keywords.
+//     *
+//     * @param keywords for searching
+//     * @return list of persons in full model with name containing some of the keywords
+//     */
+//    private static ArrayList<String[]> getPersonsWithNameContainingAnyKeyword(Collection<String> keywords) {
+//        final ArrayList<String[]> matchedPersons = new ArrayList<>();
+//        for (String[] person : getAllPersonsInAddressBook()) {
+//            final Set<String> wordsInName = new HashSet<>(splitByWhitespace(getNameFromPerson(person)));
+//            if (!Collections.disjoint(wordsInName, keywords)) {
+//                matchedPersons.add(person);
+//            }
+//        }
+//        return matchedPersons;
+//    }
+
     /**
      * Retrieves all persons in the full model whose names contain some of the specified keywords.
+     * Keyword matching is case insensitive.
      *
      * @param keywords for searching
      * @return list of persons in full model with name containing some of the keywords
@@ -485,7 +520,7 @@ public class AddressBook {
     private static ArrayList<String[]> getPersonsWithNameContainingAnyKeyword(Collection<String> keywords) {
         final ArrayList<String[]> matchedPersons = new ArrayList<>();
         for (String[] person : getAllPersonsInAddressBook()) {
-            final Set<String> wordsInName = new HashSet<>(splitByWhitespace(getNameFromPerson(person)));
+            final Set<String> wordsInName = new HashSet<>(splitByWhitespace(getNameFromPerson(person).toUpperCase()));
             if (!Collections.disjoint(wordsInName, keywords)) {
                 matchedPersons.add(person);
             }
