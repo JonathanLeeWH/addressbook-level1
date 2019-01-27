@@ -206,6 +206,10 @@ public class AddressBook {
      * ====================================================================
      */
 
+    /**
+     * The main method for the AddressBook class.
+     * @param args
+     */
     public static void main(String[] args) {
         showWelcomeMessage();
         processProgramArgs(args);
@@ -266,7 +270,7 @@ public class AddressBook {
             setupGivenFileForStorage(args[0]);
         }
 
-        if(args.length == 0) {
+        if (args.length == 0) {
             setupDefaultFileForStorage();
         }
     }
@@ -383,6 +387,7 @@ public class AddressBook {
             return getUsageInfoForAllCommands();
         case COMMAND_EXIT_WORD:
             executeExitProgramRequest();
+            //Fallthrough
         default:
             return getMessageForInvalidCommandInput(commandType, getUsageInfoForAllCommands());
         }
@@ -394,7 +399,7 @@ public class AddressBook {
      * @return  size 2 array; first element is the command type and second element is the arguments string
      */
     private static String[] splitCommandWordAndArgs(String rawUserInput) {
-        final String[] split =  rawUserInput.trim().split("\\s+", 2);
+        final String[] split = rawUserInput.trim().split("\\s+", 2);
         return split.length == 2 ? split : new String[] { split[0] , "" }; // else case: no parameters
     }
 
@@ -433,28 +438,14 @@ public class AddressBook {
     /**
      * Constructs a feedback message for a successful add person command execution.
      *
-     * @see #executeAddPerson(String)
      * @param addedPerson person who was successfully added
      * @return successful add person feedback message
+     * @see #executeAddPerson(String)
      */
     private static String getMessageForSuccessfulAddPerson(String[] addedPerson) {
         return String.format(MESSAGE_ADDED,
                 getNameFromPerson(addedPerson), getPhoneFromPerson(addedPerson), getEmailFromPerson(addedPerson));
     }
-
-//    /**
-//     * Finds and lists all persons in address book whose name contains any of the argument keywords.
-//     * Keyword matching is case sensitive.
-//     *
-//     * @param commandArgs full command args string from the user
-//     * @return feedback display message for the operation result
-//     */
-//    private static String executeFindPersons(String commandArgs) {
-//        final Set<String> keywords = extractKeywordsFromFindPersonArgs(commandArgs);
-//        final ArrayList<String[]> personsFound = getPersonsWithNameContainingAnyKeyword(keywords);
-//        showToUser(personsFound);
-//        return getMessageForPersonsDisplayedSummary(personsFound);
-//    }
 
     /**
      * Finds and lists all persons in address book whose name contains any of the argument keywords.
@@ -492,23 +483,6 @@ public class AddressBook {
     private static Set<String> extractKeywordsFromFindPersonArgs(String findPersonCommandArgs) {
         return new HashSet<>(splitByWhitespace(findPersonCommandArgs.trim()));
     }
-
-//    /**
-//     * Retrieves all persons in the full model whose names contain some of the specified keywords.
-//     *
-//     * @param keywords for searching
-//     * @return list of persons in full model with name containing some of the keywords
-//     */
-//    private static ArrayList<String[]> getPersonsWithNameContainingAnyKeyword(Collection<String> keywords) {
-//        final ArrayList<String[]> matchedPersons = new ArrayList<>();
-//        for (String[] person : getAllPersonsInAddressBook()) {
-//            final Set<String> wordsInName = new HashSet<>(splitByWhitespace(getNameFromPerson(person)));
-//            if (!Collections.disjoint(wordsInName, keywords)) {
-//                matchedPersons.add(person);
-//            }
-//        }
-//        return matchedPersons;
-//    }
 
     /**
      * Retrieves all persons in the full model whose names contain some of the specified keywords.
@@ -585,9 +559,9 @@ public class AddressBook {
     /**
      * Constructs a feedback message for a successful delete person command execution.
      *
+     * @param deletedPerson successfully deleted.
+     * @return successful delete person feedback message.
      * @see #executeDeletePerson(String)
-     * @param deletedPerson successfully deleted
-     * @return successful delete person feedback message
      */
     private static String getMessageForSuccessfulDelete(String[] deletedPerson) {
         return String.format(MESSAGE_DELETE_PERSON_SUCCESS, getMessageForFormattedPersonData(deletedPerson));
@@ -643,7 +617,7 @@ public class AddressBook {
         return inputLine;
     }
 
-   /*
+    /*
     * NOTE : =============================================================
     * Note how the method below uses Java 'Varargs' feature so that the
     * method can accept a varying number of message parameters.
@@ -693,7 +667,8 @@ public class AddressBook {
      * @return formatted listing message with index
      */
     private static String getIndexedPersonListElementMessage(int visibleIndex, String[] person) {
-        return String.format(MESSAGE_DISPLAY_LIST_ELEMENT_INDEX, visibleIndex) + getMessageForFormattedPersonData(person);
+        return String.format(MESSAGE_DISPLAY_LIST_ELEMENT_INDEX, visibleIndex)
+                + getMessageForFormattedPersonData(person);
     }
 
     /**
@@ -724,7 +699,7 @@ public class AddressBook {
      * @return the actual person object in the last shown person listing
      */
     private static String[] getPersonByLastVisibleIndex(int lastVisibleIndex) {
-       return latestPersonListingView.get(lastVisibleIndex - DISPLAYED_INDEX_OFFSET);
+        return latestPersonListingView.get(lastVisibleIndex - DISPLAYED_INDEX_OFFSET);
     }
 
 
@@ -825,7 +800,8 @@ public class AddressBook {
     /**
      * Deletes the specified person from the addressbook if it is inside. Saves any changes to storage file.
      *
-     * @param exactPerson the actual person inside the address book (exactPerson == the person to delete in the full list)
+     * @param exactPerson the actual person inside the address book (
+     *                    exactPerson == the person to delete in the full list)
      * @return true if the given person was found and deleted in the model
      */
     private static boolean deletePersonFromAddressBook(String[] exactPerson) {
@@ -1083,7 +1059,7 @@ public class AddressBook {
      * @param name to be validated
      */
     private static boolean isPersonNameValid(String name) {
-        return name.matches("(\\w|\\s)+");  // name is nonempty mixture of alphabets and whitespace
+        return name.matches("(\\w|\\s)+"); // name is nonempty mixture of alphabets and whitespace
         //TODO: implement a more permissive validation
     }
 
@@ -1093,7 +1069,7 @@ public class AddressBook {
      * @param phone to be validated
      */
     private static boolean isPersonPhoneValid(String phone) {
-        return phone.matches("\\d+");    // phone nonempty sequence of digits
+        return phone.matches("\\d+"); // phone nonempty sequence of digits
         //TODO: implement a more permissive validation
     }
 
