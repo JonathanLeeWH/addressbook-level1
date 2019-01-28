@@ -44,7 +44,7 @@ public class AddressBook {
     /**
      * Version info of the program.
      */
-    private static final String VERSION = "AddessBook Level 1 - Version 1.0";
+    private static final String VERSION = "AddressBook Level 1 - Version 1.0";
 
     /**
      * A decorative prefix added to the beginning of lines printed by AddressBook
@@ -218,6 +218,9 @@ public class AddressBook {
         return;
     }
 
+    /**
+     * Parses command line arguments input by the user.
+     */
     private static void parseInputCommand() {
         while (true) {
             String userCommand = getUserInput();
